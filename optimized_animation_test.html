@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Animation Test</title>
+    <style>
+        
+        @keyframes moveObject {
+            
+            0.0% {
+                transform: translate(0px, 0px);
+            }
+        
+            33.333333333333336% {
+                transform: translate(419.5380043549971px, 464.7326975519007px);
+            }
+        
+            66.66666666666667% {
+                transform: translate(41.46804233084522px, 257.0379435643323px);
+            }
+        
+            100.0% {
+                transform: translate(-163.59309311445318px, 149.48101041664566px);
+            }
+        
+        }
+
+        .moving-object {
+            animation: moveObject 4s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="moving-object" style="width: 50px; height: 50px; background-color: red; position: absolute;"></div>
+</body>
+</html>
