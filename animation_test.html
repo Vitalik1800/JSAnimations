@@ -1,13 +1,12 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Animation Test</title>
+    <title>CSS Animation Comparison</title>
     <style>
         
-        @keyframes moveObject {
+        @keyframes original {
             
             0.0% {
                 transform: translate(0px, 0px);
@@ -27,13 +26,133 @@
         
         }
 
-        .moving-object {
-            animation: moveObject 4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+        .original-object {
+            animation: original 4s linear infinite;
         }
     
+        
+        @keyframes predicted {
+            
+            0.0% {
+                transform: translate(0px, 0px);
+            }
+        
+            25.0% {
+                transform: translate(419.5380043549971px, 464.7326975519007px);
+            }
+        
+            50.0% {
+                transform: translate(41.46804233084522px, 257.0379435643323px);
+            }
+        
+            75.0% {
+                transform: translate(-163.59309311445318px, 149.48101041664566px);
+            }
+        
+            100.0% {
+                transform: translate(-20.28587532043457px, 9.503623008728027px);
+            }
+        
+        }
+
+        .predicted-object {
+            animation: predicted 4s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+        }
+    
+
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .box {
+            width: 300px;
+            height: 300px;
+            background-color: lightgray;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #first-block, #second-block {
+            border: 2px solid black;
+            padding: 20px;
+        }
+
+        .square {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            position: absolute;
+            animation: none;
+        }
+
+        .controls{
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="moving-object" style="width: 50px; height: 50px; background-color: red; position: absolute;"></div>
+    <h1>Аналіз анімацій за допомогою LSTM</h1>
+    <div class="container">
+        <div id="first-block">
+            <h3>Оригінальна анімація</h3>
+            <div class="box" id="original-box">
+                <div class="square" id="original-square"></div>
+            </div>
+        </div>
+        <div id="second-block">
+            <h3>Передбачена анімація</h3>
+            <div class="box" id="predicted-box">
+                <div class="square" id="predicted-square"></div>
+            </div>
+        </div>
+    </div>
+    <div class="controls">
+        <button onclick="startAnimation()">Відтворити</button>
+        <button onclick="pauseAnimation()">Пауза</button>
+        <button onclick="resetAnimation()">Скинути</button>
+        <button onclick="changeAnimationType()">Змінити тип анімації</button>
+    </div>
+
+    <script>
+        const animationTypes = [
+            "linear",
+            "ease",
+            "ease-in",
+            "ease-out",
+            "ease-in-out",
+            "cubic-bezier(0.42, 0, 0.58, 1)",
+            "cubic-bezier(0.25, 1, 0.5, 1)"
+        ];
+        let currentAnimationIndex = 0;
+
+        function startAnimation() {
+            document.querySelector("#original-square").style.animation = "original 4s " + animationTypes[currentAnimationIndex] + " infinite";
+            document.querySelector("#predicted-square").style.animation = "predicted 4s " + animationTypes[currentAnimationIndex] + " infinite";
+        }
+
+        function pauseAnimation() {
+            document.querySelector("#original-square").style.animationPlayState = 'paused';
+            document.querySelector("#predicted-square").style.animationPlayState = 'paused';
+        }
+
+        function resetAnimation() {
+            document.querySelector("#original-square").style.animation = 'none';
+            document.querySelector("#predicted-square").style.animation = 'none';
+            setTimeout(startAnimation, 50);
+        }
+
+        function changeAnimationType() {
+            currentAnimationIndex = (currentAnimationIndex + 1) % animationTypes.length;
+            console.log("Новий тип анімації: " + animationTypes[currentAnimationIndex]);
+            resetAnimation();
+        }
+    </script>
 </body>
 </html>
